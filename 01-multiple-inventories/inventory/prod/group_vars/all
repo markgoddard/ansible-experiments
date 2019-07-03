@@ -1,0 +1,2 @@
+variable_defined_in_prod: true
+variable_defined_in_both: prod
