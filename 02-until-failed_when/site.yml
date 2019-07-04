@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  tasks:
+    - command: 'false'
+      register: result
+      failed_when: false
+      until: result.rc == 0
+      retries: 2
+      delay: 1
