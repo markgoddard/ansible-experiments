@@ -2,6 +2,7 @@
 
 Q: Does `failed_when: false` override the result of `until`, even if the retry
    limit is reached?
+
 A: Yes.
 
 ```

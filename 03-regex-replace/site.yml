@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # Normally we require two backslashes with a backref for valid YAML.
+    - debug:
+        msg: "{{ 'abc123' | regex_replace('^(.*)$', '\\1') }}"
+
+    # In a literal block scalar (> or >-) we only need one.
+    - debug:
+        msg: >-
+          {{ 'abc123' | regex_replace('^(.*)$', '\1') }}
+
+    # To use a number after a backref, just g<$n>
+    - debug:
+        msg: "{{ 'abc123' | regex_replace('abc(123)', '\\g<1>456') }}"
