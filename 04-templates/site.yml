@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  tasks:
+    - template:
+        src: src.j2
+        dest: /tmp/templated
