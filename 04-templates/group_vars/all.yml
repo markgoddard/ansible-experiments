@@ -1,0 +1,2 @@
+---
+bad_group_var: "{{ hostvars[inventory_hostname]['nonexistent-group_vars'] }}"
