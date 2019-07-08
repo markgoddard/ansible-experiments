@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    # Works:
+    - command: echo hi
+      register: result
+      until: "'hi' in result.stdout"
+
+    # Does not work before Ansible 2.8
+    - command: echo hi
+      vars:
+        cmd_out: "{{ result2.stdout }}"
+      register: result2
+      until: "'hi' in cmd_out"
