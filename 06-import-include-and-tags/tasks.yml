@@ -1,0 +1,6 @@
+---
+- name: Task file task
+  debug:
+    msg: Hello
+  tags:
+    - task-file

@@ -1,0 +1,6 @@
+---
+- name: Role task
+  debug:
+    msg: Hello
+  tags:
+    - role-task

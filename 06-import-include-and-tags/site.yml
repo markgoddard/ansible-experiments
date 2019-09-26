@@ -1,0 +1,54 @@
+---
+- hosts: localhost
+  tags:
+    - tasks-play
+  tasks:
+    - debug:
+        msg: import task file
+      tags:
+        - import-tasks
+        - task-file
+
+    - import_tasks: tasks.yml
+      tags:
+        - import-tasks
+
+    - debug:
+        msg: include task file
+      tags:
+        - include-tasks
+        - task-file
+
+    - include_tasks: tasks.yml
+      tags:
+        - include-tasks
+
+- hosts: localhost
+  tags:
+    - roles-play
+  roles:
+    - name: test
+      tags:
+        - old-style-role
+  tasks:
+    - debug:
+        msg: import role
+      tags:
+        - import-role
+        - role-task
+
+    - import_role:
+        name: test
+      tags:
+        - import-role
+
+    - debug:
+        msg: include role
+      tags:
+        - include-role
+        - role-task
+
+    - include_role:
+        name: test
+      tags:
+        - include-role
