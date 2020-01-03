@@ -1,0 +1,28 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    # This task takes 60 seconds per batch to execute. e.g. with
+    # ANSIBLE_FORKS=5 and up to 5 hosts it takes 60 seconds. With
+    # ANSIBLE_FORKS=5 and 6-10 hosts it takes 120 seconds.
+    - name: Start a long running task asynchronously with polling
+      command: sleep 60
+      async: 65
+      poll: 5
+
+    # This task kicks off all jobs asynchronously and returns immediately.
+    - name: Start a long running task asyncronously
+      command: sleep 60
+      async: 65
+      poll: 0
+      register: result
+
+    # This task takes roughly 60 seconds, since all jobs are running
+    # concurrently.
+    - name: Check the async job status
+      async_status:
+        jid: "{{ result.ansible_job_id }}"
+      register: status_result
+      until: status_result.finished
+      retries: 15
+      delay: 5

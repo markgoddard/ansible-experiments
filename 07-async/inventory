@@ -1,0 +1,6 @@
+h1 ansible_connection=local
+h2 ansible_connection=local
+h3 ansible_connection=local
+h4 ansible_connection=local
+h5 ansible_connection=local
+h6 ansible_connection=local
