@@ -202,3 +202,60 @@ sys 0m0.100s
 
 Wow, quite an improvement. We can see that facts were not gathered, and the
 cache was used for each play.
+
+## Smart mode and the setup module
+
+The `setup` module can be used to explicitly gather facts via a task. We'll use
+the `setup.yml` playbook to test how this interacts with `smart` mode:
+
+```
+---
+# Specify gather_facts=no, then gather via setup module.
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - setup:
+```
+
+Try running this with smart mode:
+
+```
+export ANSIBLE_GATHERING=smart
+time ansible-playbook setup.yml
+PLAY [localhost] ******************************************************
+
+TASK [setup] **********************************************************
+ok: [localhost]
+
+PLAY RECAP ************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+real    0m2.532s
+user    0m1.396s
+sys 0m0.244s
+```
+
+We can see that the setup task ran. If we run the same commands again, the
+runtime does not significantly reduce, and we see that the task executes again.
+This suggests that the `setup` module will always run, regardless of the state
+of the cache.
+
+We may want to skip the setup module if we have facts in the cache. How can we
+do this? There is a variable called `module_setup` which gets set to `true`
+when facts exist for a host. Additionally, `gather_subset` tells us which fact
+subsets exist. See `conditional-setup.yml` for an example of how to do this.
+
+If there is a specific fact we are interested in, we can also just check if it
+is defined.
+
+## Gotchas
+
+* Fact gathering honours the `become` attribute on a play, and this affects
+  things like `ansible_user_uid`. The `smart` mode will not collect facts when
+  they exist in the cache, even if they were collected with a different value
+  of `become`.
+
+## Open Questions
+
+* How does caching interact with `gather_subset`?

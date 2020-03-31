@@ -1,0 +1,6 @@
+---
+# Specify gather_facts=no, then gather via setup module.
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - setup:

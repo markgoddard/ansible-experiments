@@ -5,7 +5,7 @@
     - debug:
         var: ansible_hostname
 
-# Do specify gather_facts.
+# Specify gather_facts=yes.
 - hosts: localhost
   gather_facts: yes
   tasks:
