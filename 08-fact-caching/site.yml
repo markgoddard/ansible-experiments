@@ -1,0 +1,13 @@
+---
+# Don't specify gather_facts.
+- hosts: localhost
+  tasks:
+    - debug:
+        var: ansible_hostname
+
+# Do specify gather_facts.
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+    - debug:
+        var: ansible_hostname
