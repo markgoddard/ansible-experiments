@@ -1,0 +1,5 @@
+---
+- debug:
+    msg: parent-role
+  changed_when: True
+  notify: Some handler

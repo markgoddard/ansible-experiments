@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - include_role:
+        name: role1
+
+    - include_role:
+        name: role2
+
+    - include_role:
+        name: role3
