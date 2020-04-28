@@ -1,0 +1,5 @@
+---
+- import_role:
+    name: parent-role
+  vars:
+    role_name: role2
