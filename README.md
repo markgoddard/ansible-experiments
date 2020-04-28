@@ -10,3 +10,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Importing, including and tags](06-import-include-and-tags)
 * [Async tasks](07-async)
 * [Fact caching](08-fact-caching)
+* [Roles handlers and vars](09-roles-handlers-and-vars)
