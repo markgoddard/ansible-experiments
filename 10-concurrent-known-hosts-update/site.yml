@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Set number of hosts to test with (override with -e hosts_size=<int>)
+      set_fact:
+        hosts_size: 32
+      when: hosts_size is undefined
+    - name: Remove temporary known host file
+      file:
+        path: "/tmp/test_known_hosts"
+        state: absent
+    - add_host:
+        hostname: "{{ item }}"
+        ansible_connection: localhost
+        groups: ssh_hosts
+      with_sequence: "start=1 end={{ hosts_size }} format=host%d"
+    - name: Get number of localhost SSH keys
+      shell: ssh-keyscan localhost | grep -c '^localhost'
+      register: localhost_keys
+
+- hosts: ssh_hosts
+  gather_facts: false
+  tasks:
+    - name: Generate SSH key data
+      local_action:
+        module: shell ssh-keyscan localhost | sed 's/^localhost/{{ item }}/'
+      with_items:
+        - "{{ ansible_host | default(inventory_hostname) }}"
+      register: keyscan_result
+      changed_when: False
+
+- hosts: ssh_hosts
+  gather_facts: false
+  serial: "{{ ansible_serial | default(-1) }}"
+  tasks:
+    - name: Ensure SSH keys are in known hosts
+      local_action:
+        module: known_hosts
+        host: "{{ item[0].item }}"
+        key: "{{ item[1] }}"
+        path: "/tmp/test_known_hosts"
+      with_subelements:
+        - "{{ keyscan_result.results }}"
+        - stdout_lines
+
+- hosts: localhost
+  gather_facts: false
+  vars:
+    expected_lines: "{{ localhost_keys.stdout|int * hosts_size|int }}"
+  tasks:
+    - name: Get number of keys added to known hosts file
+      shell: grep -c '^host' /tmp/test_known_hosts
+      register: known_hosts_size
+    - fail:
+        msg: "Found {{ known_hosts_size.stdout }} keys, expected {{ expected_lines }}"
+      when: known_hosts_size.stdout != expected_lines
+    - debug:
+        msg: "Found the expected number of keys"

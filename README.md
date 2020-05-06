@@ -11,3 +11,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Async tasks](07-async)
 * [Fact caching](08-fact-caching)
 * [Roles handlers and vars](09-roles-handlers-and-vars)
+* [Concurrent known hosts update](10-concurrent-known-hosts-update)
