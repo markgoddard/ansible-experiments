@@ -57,28 +57,33 @@ def parse(logs, csv_writer):
     Task.write_header(csv_writer)
     play = None
     task = None
-    task_pattern = re.compile(r'^(TASK|PLAY) \[((.*) : )?(.*)\] \**')
+    task_pattern = re.compile(r'^(TASK|PLAY) \[((.*) : )?(.*)\] \*+')
     # e.g. Friday 19 June 2020  19:02:52 +0100 (0:00:00.031)       0:00:00.031 ***********
-    profile_pattern = re.compile(r'^(.*) \((.*)\) *([^ ]*) \**')
+    profile_pattern = re.compile(r'^(.*) \((.*)\) *([^ ]*) \**+')
     host_pattern = re.compile(r'^(ok|skipping|fatal): \[(.*)\]')
     for index, line in enumerate(logs):
         match = task_pattern.search(line)
         if match:
             if match.group(1) == 'TASK':
                 if task:
+                    # Complete the previous task.  Grab profiling information
+                    # from the following line
+                    profile_match = profile_pattern.search(logs[index+1])
+                    assert profile_match
+                    #print(profile_match.groups())
+                    task.timestamp, duration, elapsed = profile_match.groups()
+                    task.duration = datetime.strptime(duration, "%H:%M:%S.%f").time()
+                    task.elapsed = datetime.strptime(elapsed, "%H:%M:%S.%f").time()
+                    #print("Task {} role {} duration {}".format(task, role, duration))
+
+                    # Write task to CSV.
                     task.write(csv_writer)
+
+                # Start the new task.
                 task = Task()
                 task.play = play
                 task.task = match.group(4)
                 task.role = match.group(3)
-                # Profile
-                match = profile_pattern.search(logs[index+1])
-                assert match
-                #print(match.groups())
-                task.timestamp, duration, elapsed = match.groups()
-                task.duration = datetime.strptime(duration, "%H:%M:%S.%f").time()
-                task.elapsed = datetime.strptime(elapsed, "%H:%M:%S.%f").time()
-                #print("Task {} role {} duration {}".format(task, role, duration))
             else:
                 assert match.group(1) == 'PLAY'
                 play = match.group(4)
