@@ -1,0 +1,69 @@
+---
+# Play A runs "Some handler" twice (not expected).
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - role
+  tasks:
+    - include_role:
+        name: role
+
+    - include_role:
+        name: role
+
+    - include_role:
+        name: role
+
+# Play B runs "Some handler" once (as expected).
+# Switching any `include` to `import` works, not necessarily the first.
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - role
+  tasks:
+    - import_role:
+        name: role
+
+    - include_role:
+        name: role
+
+    - include_role:
+        name: role
+
+# Play C runs "Some handler" once (as expected).
+# Removing `roles` works too. Import/include do not matter here.
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    - include_role:
+        name: role
+
+    - include_role:
+        name: role
+
+    - include_role:
+        name: role
+
+# Play D is like play A but with indirect role usage.
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - role
+  tasks:
+    - import_role:
+        name: including-role
+
+    - import_role:
+        name: including-role
+
+# Play E is like play B but with indirect role usage.
+- hosts: localhost
+  gather_facts: False
+  roles:
+    - role
+  tasks:
+    - import_role:
+        name: including-role
+
+    - import_role:
+        name: importing-role

@@ -1,0 +1,5 @@
+---
+- debug:
+    msg: role task
+  changed_when: True
+  notify: Some handler

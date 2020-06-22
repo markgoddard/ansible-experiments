@@ -1,0 +1,4 @@
+---
+- name: Some handler
+  debug:
+    msg: Some msg
