@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars:
+    play_var: pv
+  tasks:
+    - import_role:
+        name: test
+      vars:
+        import_role_var: irv

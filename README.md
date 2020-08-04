@@ -13,3 +13,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Roles handlers and vars](09-roles-handlers-and-vars)
 * [Roles handlers more quirks](10-roles-handlers-more-quirks)
 * [Concurrent known hosts update](11-concurrent-known-hosts-update)
+* [Hostvars variables](12-hostvars-variables)

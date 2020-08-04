@@ -1,0 +1,24 @@
+---
+- name: Set a fact
+  set_fact:
+    set_fact_var: sfv
+
+- name: Check which variables are in hostvars
+  vars:
+    task_var: tv
+  debug:
+    msg: >-
+      Variable '{{ item }}' is {% if item not in hostvars[inventory_hostname] %} not{% endif %}
+      in hostvars
+      {% if item in hostvars[inventory_hostname] %}: value is {{ hostvars[inventory_hostname][item] }}{% endif %}
+  with_items:
+    - extra_var
+    - playbook_group_var
+    - inventory_group_var
+    - inventory_host_var
+    - play_var
+    - task_var
+    - role_default
+    - role_var
+    - import_role_var
+    - set_fact_var
