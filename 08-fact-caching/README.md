@@ -241,13 +241,84 @@ runtime does not significantly reduce, and we see that the task executes again.
 This suggests that the `setup` module will always run, regardless of the state
 of the cache.
 
+## Conditional gathering with the setup module
+
 We may want to skip the setup module if we have facts in the cache. How can we
 do this? There is a variable called `module_setup` which gets set to `true`
-when facts exist for a host. Additionally, `gather_subset` tells us which fact
-subsets exist. See `conditional-setup.yml` for an example of how to do this.
+when facts exist for a host.  See `conditional-setup.yml` for an example of how
+to do this.
 
-If there is a specific fact we are interested in, we can also just check if it
-is defined.
+We might ask whether `module_setup` respects the expiry of the cache. We can
+test this using the `conditional-setup.yml` playbook, with a low cache expiry.
+Run it once to populate the cache:
+
+```
+export ANSIBLE_GATHERING=smart
+export ANSIBLE_CACHE_PLUGIN_TIMEOUT=10
+time ansible-playbook conditional-setup.yml
+PLAY [localhost] ***********************************************************
+
+TASK [setup] ***************************************************************
+ok: [localhost]
+
+PLAY RECAP *****************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+real	0m2.569s
+user	0m2.091s
+sys	0m0.458s
+```
+
+Then again, to check that the cache is used:
+
+```
+export ANSIBLE_GATHERING=smart
+export ANSIBLE_CACHE_PLUGIN_TIMEOUT=10
+time ansible-playbook conditional-setup.yml
+PLAY [localhost] ***********************************************************
+
+TASK [setup] ***************************************************************
+skipping: [localhost]
+
+PLAY RECAP *****************************************************************
+localhost                  : ok=0    changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0
+
+
+real	0m1.332s
+user	0m1.223s
+sys	0m0.118s
+```
+
+Then wait for the cache to expire, and run once more:
+
+```
+sleep 10
+export ANSIBLE_GATHERING=smart
+export ANSIBLE_CACHE_PLUGIN_TIMEOUT=10
+time ansible-playbook conditional-setup.yml
+PLAY [localhost] ***********************************************************
+
+TASK [setup] ***************************************************************
+ok: [localhost]
+
+PLAY RECAP *****************************************************************
+localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+real	0m2.491s
+user	0m1.974s
+sys	0m0.499s
+```
+
+We see that the cache is deemed invalid, and facts are gathered again, as we
+might expect.
+
+Other conditions we might use with the setup module:
+
+* `gather_subset` tells us which fact subsets exist
+* if there is a specific fact we are interested in, we can check if it is
+  defined
 
 ## Gotchas
 
