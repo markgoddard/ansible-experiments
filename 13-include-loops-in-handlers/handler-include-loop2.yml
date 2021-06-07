@@ -1,0 +1,17 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "First host: {{ groups['x']|first }}"
+
+    - command: echo hi
+      delegate_to: localhost
+      notify:
+        - include when loop item is inventory_hostname
+
+  handlers:
+    - name: include when loop item is inventory_hostname
+      include_tasks: include.yml
+      when: inventory_hostname == item
+      loop: "{{ groups['x'] }}"
