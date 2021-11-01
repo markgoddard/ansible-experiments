@@ -1,0 +1,16 @@
+---
+- name: Fail some hosts in a play (fatal)
+  hosts: all
+  gather_facts: no
+  any_errors_fatal: yes
+  tasks:
+    - name: Fail some hosts in a play (fatal)
+      fail:
+      when: inventory_hostname == groups['all'][0]
+
+- name: Nobody gets here
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Nobody gets here
+      debug:

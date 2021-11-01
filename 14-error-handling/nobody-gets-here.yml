@@ -1,0 +1,7 @@
+---
+- name: Nobody gets here
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Nobody gets here
+      debug:

@@ -1,0 +1,8 @@
+---
+- name: Fail some hosts in a play
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fail some hosts in a play
+      fail:
+      when: inventory_hostname == groups['all'][0]

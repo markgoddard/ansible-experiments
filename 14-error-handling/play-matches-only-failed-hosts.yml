@@ -1,0 +1,24 @@
+---
+# Execution continues if all hosts matching a play have previously failed
+
+- name: Fail one host
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fail one host
+      fail:
+      when: inventory_hostname in groups['g1']
+
+- name: All hosts matching this play have previously failed
+  hosts: g1
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "No hosts match"
+
+- name: This play continues regardless
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Remaining hosts continue
+      debug:

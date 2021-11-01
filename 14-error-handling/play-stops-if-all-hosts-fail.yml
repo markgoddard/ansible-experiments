@@ -1,0 +1,17 @@
+---
+# Execution stops if all hosts matching a play have failed, even if there are
+# other hosts in the inventory
+
+- name: Fail all hosts in a play
+  hosts: g1
+  gather_facts: no
+  tasks:
+    - name: Fail all hosts in a play
+      fail:
+
+- name: Nobody gets here
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Nobody gets here
+      debug:

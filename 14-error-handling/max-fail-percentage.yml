@@ -1,0 +1,16 @@
+---
+- name: Fail some hosts in a play (max_fail_percentage=0)
+  hosts: all
+  gather_facts: no
+  max_fail_percentage: 0
+  tasks:
+    - name: Fail some hosts in a play (max_fail_percentage=0)
+      fail:
+      when: inventory_hostname == groups['all'][0]
+
+- name: Nobody gets here
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Nobody gets here
+      debug:

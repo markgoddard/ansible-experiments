@@ -1,0 +1,18 @@
+---
+# Max fail percentage only applies to failures during the play, not previous plays
+
+- name: Fail one host
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Fail one host
+      fail:
+      when: inventory_hostname == groups['all'][0]
+
+- name: Play with max_fail_percentage=0 ignores previous failures
+  hosts: all
+  gather_facts: no
+  max_fail_percentage: 0
+  tasks:
+    - name: Remaining hosts continue
+      debug:
