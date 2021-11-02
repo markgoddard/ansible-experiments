@@ -1,0 +1,12 @@
+---
+- name: any_errors_fatal cannot be templated
+  hosts: all
+  any_errors_fatal: "{{ False }}"
+  gather_facts: no
+  tasks:
+    - name: Fail one host
+      fail:
+      when: inventory_hostname == groups['all'][0]
+
+    - name: Nobody gets here
+      debug:

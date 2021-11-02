@@ -16,3 +16,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Hostvars variables](12-hostvars-variables)
 * [Include loops in handlers](13-include-loops-in-handlers)
 * [Error handling](14-error-handling)
+* [Fatal errors](15-fatal-errors)

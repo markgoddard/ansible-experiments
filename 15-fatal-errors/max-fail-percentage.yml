@@ -1,0 +1,12 @@
+---
+- name: max_fail_percentage can be templated
+  hosts: all
+  max_fail_percentage: "{{ 0 }}"
+  gather_facts: no
+  tasks:
+    - name: Fail one host
+      fail:
+      when: inventory_hostname == groups['all'][0]
+
+    - name: Nobody gets here
+      debug:

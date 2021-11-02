@@ -1,0 +1,14 @@
+- hosts: all
+  any_errors_fatal: no
+  max_fail_percentage: "{{ mfp | default(100) }}"
+  gather_facts: no
+  tasks:
+    - fail:
+      when: inventory_hostname == groups['all'][0]
+
+    - fail:
+      when: inventory_hostname == groups['all'][1]
+      any_errors_fatal: false
+
+    - debug:
+        msg: nobody gets here
