@@ -15,3 +15,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Concurrent known hosts update](11-concurrent-known-hosts-update)
 * [Hostvars variables](12-hostvars-variables)
 * [Include loops in handlers](13-include-loops-in-handlers)
+* [Error handling](14-error-handling)
