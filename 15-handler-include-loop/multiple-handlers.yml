@@ -1,0 +1,29 @@
+---
+- hosts: all
+  tasks:
+    - name: Trigger one handler
+      debug:
+        msg: hi
+      changed_when: true
+      when: inventory_hostname == 'h1'
+      notify: Handler 1
+
+    - name: Trigger handlers
+      debug:
+        msg: hi
+      changed_when: true
+      notify: Handler 2
+  handlers:
+    - name: Handler 1
+      debug:
+        msg: Hi
+
+    - name: Handler 2
+      include_tasks: include.yml
+      with_inventory_hostnames: all
+      when: inventory_hostname == item
+
+    - name: Listening to handler 1
+      debug:
+        msg: Hi
+      listen: Handler 1

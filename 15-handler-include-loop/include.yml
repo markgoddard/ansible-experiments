@@ -1,0 +1,8 @@
+---
+- name: Included
+  debug:
+    msg: Included
+
+- name: sleep
+  pause:
+    seconds: 5

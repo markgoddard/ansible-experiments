@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Trigger handlers
+      debug:
+        msg: hi
+      changed_when: true
+      notify: Handler
+  handlers:
+    - name: Handler
+      include_tasks: include.yml
+      with_inventory_hostnames: all
+      when: inventory_hostname == item
