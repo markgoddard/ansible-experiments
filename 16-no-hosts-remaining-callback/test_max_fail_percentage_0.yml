@@ -1,0 +1,6 @@
+---
+- hosts: all
+  max_fail_percentage: 0
+  tasks:
+    - fail:
+    - debug:
