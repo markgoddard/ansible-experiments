@@ -17,3 +17,4 @@ Experimentation with ansible to show some of its many quirks.
 * [Include loops in handlers](13-include-loops-in-handlers)
 * [Error handling](14-error-handling)
 * [Fatal errors](15-fatal-errors)
+* [No hosts remaining callback][16-no-hosts-remaining-callback]
