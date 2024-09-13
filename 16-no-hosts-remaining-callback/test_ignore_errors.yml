@@ -1,0 +1,7 @@
+---
+- hosts: all:!unreachable
+  tasks:
+    - fail:
+      ignore_errors: true
+    - debug:
+        msg: All hosts should get here

@@ -1,0 +1,8 @@
+---
+- hosts: unreachable
+  gather_facts: false
+  tasks:
+    - setup:
+      ignore_unreachable: true
+    - debug:
+        msg: All hosts should get here

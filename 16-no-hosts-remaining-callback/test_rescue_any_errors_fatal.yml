@@ -1,0 +1,10 @@
+---
+- hosts: all:!unreachable
+  any_errors_fatal: true
+  tasks:
+    - block:
+      - fail:
+      rescue:
+      - debug:
+    - debug:
+        msg: All hosts should get here

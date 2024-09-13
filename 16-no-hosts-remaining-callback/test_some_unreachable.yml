@@ -1,0 +1,7 @@
+---
+- hosts: all
+  gather_facts: false
+  tasks:
+    - setup:
+    - debug:
+        msg: h1, h2 and h3 should get here

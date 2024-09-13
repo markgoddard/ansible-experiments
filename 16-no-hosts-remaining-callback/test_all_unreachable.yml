@@ -1,0 +1,7 @@
+---
+- hosts: unreachable
+  gather_facts: false
+  tasks:
+    - setup:
+    - debug:
+        msg: No hosts should get here

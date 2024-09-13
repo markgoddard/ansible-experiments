@@ -1,0 +1,7 @@
+---
+- hosts: all:!unreachable
+  tasks:
+    - fail:
+      when: inventory_hostname == 'h1'
+    - debug:
+        msg: h2 and h3 should get here
